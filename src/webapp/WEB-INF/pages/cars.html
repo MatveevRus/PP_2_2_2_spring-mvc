@@ -5,6 +5,13 @@
     <title>My Lovely Cars</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* Диагональный резкий градиент фона */
+        @keyframes bgGradientLoop {
+            0% { background-position: 0% 100%; }
+            50% { background-position: 100% 0%; }
+            100% { background-position: 0% 100%; }
+        }
+
         body {
             font-family: 'Orbitron', sans-serif;
             margin: 0;
@@ -12,76 +19,41 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(180deg, #0a0a0a 0%, #1c1c1c 50%, #0d0d0d 100%);
-            overflow: hidden;
+            background: linear-gradient(135deg, #ff00ff 20%, #04c8de 40%, #a18cd1 60%, #ffea00 80%);
+            background-size: 600% 600%;
+            animation: bgGradientLoop 20s ease infinite;
             color: #fff;
             position: relative;
         }
 
-
-        .neon-road {
-            position: absolute;
-            width: 100%;
-            height: 40px;
-            overflow: hidden;
-            z-index: 0;
+        /* Таблица выезжает снизу */
+        @keyframes tableSlideUp {
+            0% { transform: translateY(100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
 
-        .neon-road.top { top: 20px; }
-        .neon-road.bottom { bottom: 20px; }
-
-        .neon-road::before,
-        .neon-road::after {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #00ffff, #9b00ff, transparent);
-            animation: roadMove 2s linear infinite;
+        /* Появление строк поочередно */
+        @keyframes rowAppear {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        .neon-road::after {
-            top: 20px;
-            animation-delay: 1s;
-        }
-
-        @keyframes roadMove {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* Таблица */
         table {
-            width: 85%;
-            border-collapse: separate;
-            border-spacing: 0;
-            border-radius: 0 0 25px 25px;
-            overflow: hidden;
-            background-color: rgba(10,10,20,0.85);
-            color: #fff;
-            box-shadow: 0 0 30px #00ffff, 0 0 50px #9b00ff55 inset;
-            border-top: 4px solid #00ffff;
-            border-left: 4px solid #00ffff;
-            border-right: 4px solid #00ffff;
-            border-bottom: 4px solid #00ffff;
-            transform: translateY(50px);
-            opacity: 0;
-            animation: tableAppear 3s forwards;
-            z-index: 1;
-            position: relative;
-        }
-
-        @keyframes tableAppear {
-            to { transform: translateY(0); opacity:1; }
+            width: 60%;
+            border-collapse: collapse;
+            border-radius: 15px;
+            background-color: rgba(20,10,30,0.85);
+            box-shadow: 0 0 40px #ff5edf, 0 0 60px #04c8de55 inset;
+            animation: tableSlideUp 3s forwards;
         }
 
         caption {
             caption-side: top;
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            color: #00ffff;
-            text-shadow: 0 0 10px #00ffff, 0 0 20px #9b00ff;
-            animation: captionPulse 2s infinite alternate;
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0 0 10px #ff5edf, 0 0 20px #04c8de;
+            animation: captionPulse 1.5s infinite alternate;
         }
 
         @keyframes captionPulse {
@@ -91,46 +63,53 @@
         }
 
         th, td {
-            padding: 18px 25px;
+            padding: 12px 20px;
             text-align: center;
-            font-size: 1.4em;
+            font-size: 1.2em;
+            color: #fff;
             transition: all 0.3s ease;
         }
 
         th {
-            background: linear-gradient(90deg, #00ffff, #9b00ff);
-            color:#fff;
+            background: linear-gradient(90deg, #ff5edf, #04c8de, #a18cd1);
             text-transform: uppercase;
             letter-spacing: 1px;
-            text-shadow: 0 0 8px #00ffff;
+            text-shadow: 0 0 8px #ff5edf;
         }
 
         tbody tr {
-            background: rgba(20,20,30,0.7);
+            background: rgba(30,10,40,0.7);
             transition: all 0.3s ease;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            animation-fill-mode: forwards;
         }
 
         tbody tr:nth-child(even){
-            background: rgba(15,15,25,0.7);
+            background: rgba(25,5,35,0.7);
         }
 
-        tbody td{
-            font-weight:700;
-            color:#fff;
-            transition: all 0.3s ease;
+        /* Поочередное появление строк */
+        tbody tr:nth-child(1){ animation: rowAppear 0.6s forwards 0.3s; }
+        tbody tr:nth-child(2){ animation: rowAppear 0.6s forwards 0.6s; }
+        tbody tr:nth-child(3){ animation: rowAppear 0.6s forwards 0.9s; }
+        tbody tr:nth-child(4){ animation: rowAppear 0.6s forwards 1.2s; }
+        tbody tr:nth-child(5){ animation: rowAppear 0.6s forwards 1.5s; }
+
+        tbody tr:hover {
+            background: rgba(255,94,223,0.3);
+            box-shadow: 0 0 15px #ff5edf, 0 0 20px #04c8de inset;
         }
 
         tbody td:hover {
-            color: #00ffff;
-            transform: scale(1.1);
-            text-shadow: 0 0 10px #00ffff, 0 0 15px #9b00ff;
-            background: rgba(0,255,255,0.15);
+            color: #04c8de;
+            text-shadow: 0 0 10px #ff5edf, 0 0 15px #04c8de;
         }
     </style>
 </head>
 <body>
 
-<!-- Таблица -->
 <table>
     <caption>My Lovely Cars</caption>
     <thead>
@@ -141,17 +120,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="car, iterStat : ${cars}" style="--i:${iterStat.index}">
+    <tr th:each="car, iterStat : ${cars}">
         <td th:text="${car.model}">Model</td>
         <td th:text="${car.series}">Series</td>
         <td th:text="${car.color}">Color</td>
     </tr>
     </tbody>
 </table>
-
-
-<div class="neon-road top"></div>
-<div class="neon-road bottom"></div>
 
 </body>
 </html>
